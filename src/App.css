@@ -34,6 +34,7 @@ h1 {
 .app .search {
     display: flex;
     justify-content: center;
+    justify-content: space-evenly;
     padding: 1rem;
 }
 
@@ -48,6 +49,28 @@ h1 {
 
 ::placeholder {
     color: #f8f8f8;
+}
+
+.app .date-time-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.app .date-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+
+
+
+.app .time-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
 }
 
 .container {

@@ -1,16 +1,19 @@
 import React from "react";
 import axios from "axios";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "./App.css";
 import { FaTemperatureHigh } from "react-icons/fa";
 import { WiHumidity } from "react-icons/wi";
 import { GiWhirlwind } from "react-icons/gi";
 
-console.log(process.env);
-
 function App() {
     const [data, setData] = useState({});
     const [location, setLocation] = useState("");
+    const [dateState, setDateState] = useState(new Date());
+
+    useEffect(() => {
+        setInterval(() => setDateState(new Date()), 30000);
+    }, []);
 
     const url = `https://api.openweathermap.org/data/2.5/weather?q=${location}&appid=${process.env.REACT_APP_API_KEY}&units=metric`;
 
@@ -35,9 +38,23 @@ function App() {
                         placeholder="Enter location"
                         type="text"
                     />
-                </div>
-                <div className="date-time">
-                    moment().format('MMMM Do YYYY, h:mm:ss a')
+                    <div className="date-time-container">
+                        <p className="date-container">
+                            {" "}
+                            {dateState.toLocaleDateString("en-GB", {
+                                day: "numeric",
+                                month: "short",
+                                year: "numeric",
+                            })}
+                        </p>
+                        <p className="time-container">
+                            {dateState.toLocaleString("en-US", {
+                                hour: "numeric",
+                                minute: "numeric",
+                                hour12: true,
+                            })}
+                        </p>
+                    </div>
                 </div>
 
                 <div className="top">
