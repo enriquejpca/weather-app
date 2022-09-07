@@ -6,11 +6,13 @@ import { FaTemperatureHigh } from "react-icons/fa";
 import { WiHumidity } from "react-icons/wi";
 import { GiWhirlwind } from "react-icons/gi";
 
+console.log(process.env);
+
 function App() {
     const [data, setData] = useState({});
     const [location, setLocation] = useState("");
 
-    const url = `https://api.openweathermap.org/data/2.5/weather?q=${location}&appid=379cce7fe741a57c85f6c4fa37608ed5&units=metric`;
+    const url = `https://api.openweathermap.org/data/2.5/weather?q=${location}&appid=${process.env.REACT_APP_API_KEY}&units=metric`;
 
     const searchLocation = (event) => {
         if (event.key === "Enter") {
