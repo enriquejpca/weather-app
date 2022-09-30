@@ -5,6 +5,9 @@ import "./App.css";
 import { FaTemperatureHigh } from "react-icons/fa";
 import { WiHumidity } from "react-icons/wi";
 import { GiWhirlwind } from "react-icons/gi";
+//import ReactTypingEffect from "react-typing-effect";
+import { motion } from "framer-motion";
+import Swal from "sweetalert2";
 
 function App() {
     const [data, setData] = useState({});
@@ -19,16 +22,37 @@ function App() {
 
     const searchLocation = (event) => {
         if (event.key === "Enter") {
-            axios.get(url).then((response) => {
-                setData(response.data);
-                console.log(response.data);
-            });
+            axios
+                .get(url)
+                .then((response) => {
+                    setData(response.data);
+                    console.log(response.data);
+                })
+                .catch((err) =>
+                    Swal.fire({
+                        title: "Oh, something went wrong!",
+
+                        text: "Try it again",
+                        icon: "error",
+                        iconColor: "red",
+                        confirmButtonText: "Ok",
+                        confirmButtonColor: "black",
+                    })
+                );
             setLocation("");
         }
     };
 
     return (
-        <div className="app">
+        <div
+            className={`app ${
+                typeof data.main !== "undefined"
+                    ? data.main.temp > 20
+                        ? "app-cold"
+                        : "app"
+                    : "app"
+            }`}
+        >
             <div className="container">
                 <div className="search">
                     <input
@@ -57,36 +81,84 @@ function App() {
                     </div>
                 </div>
 
-                <div className="top">
+                <motion.div
+                    className="top"
+                    initial={{
+                        x: 0,
+                        transition: {
+                            type: "spring",
+                            duration: 3,
+                        },
+                    }}
+                    animate={{
+                        x: 0,
+
+                        transition: {
+                            delay: 0.5,
+                            x: { duration: 1 },
+                            default: { ease: "linear" },
+                        },
+                    }}
+                    whileHover={{
+                        scale: 1.3,
+                        rotate: 360,
+                        transition: { type: "spring", duration: 2 },
+                    }}
+                    whileTap={{
+                        scale: 1,
+                        rotate: 0,
+                    }}
+                >
                     <div className="location">
+                        {/*<ReactTypingEffect text={[data.name]} />*/}
                         <p>{data.name}</p>
                     </div>
                     <div className="temp">
                         {data.main ? <h1>{data.main.temp}ºC</h1> : null}
                     </div>
+
                     <div className="description">
+                        {/*{data.weather ? <p>{data.weather[0].icon}</p> : null}*/}
                         {data.weather ? <p>{data.weather[0].main}</p> : null}
 
                         {/*{data.weather ? <p>{data.weather[0].description}</p> : null}*/}
                     </div>
-                </div>
+                </motion.div>
                 {data.name !== undefined && (
                     <div className="bottom">
-                        <div className="min-temp">
+                        <motion.div
+                            className="min-temp"
+                            whileHover={{
+                                scale: 0.9,
+                                transition: { type: "spring", duration: 1 },
+                            }}
+                        >
                             {data.main ? (
                                 <p className="bold">{data.main.temp_min}ºC</p>
                             ) : null}
 
                             <p>Min</p>
-                        </div>
-                        <div className="max-temp">
+                        </motion.div>
+                        <motion.div
+                            className="max-temp"
+                            whileHover={{
+                                scale: 0.9,
+                                transition: { type: "spring", duration: 1 },
+                            }}
+                        >
                             {data.main ? (
                                 <p className="bold">{data.main.temp_max}ºC</p>
                             ) : null}
 
                             <p>Max</p>
-                        </div>
-                        <div className="feels">
+                        </motion.div>
+                        <motion.div
+                            className="feels"
+                            whileHover={{
+                                scale: 0.9,
+                                transition: { type: "spring", duration: 1 },
+                            }}
+                        >
                             <div className="icon">
                                 <FaTemperatureHigh />
                             </div>
@@ -98,8 +170,14 @@ function App() {
                             ) : null}
 
                             <p>Feels like</p>
-                        </div>
-                        <div className="humidity">
+                        </motion.div>
+                        <motion.div
+                            className="humidity"
+                            whileHover={{
+                                scale: 0.9,
+                                transition: { type: "spring", duration: 1 },
+                            }}
+                        >
                             <div className="icon">
                                 <WiHumidity />
                             </div>
@@ -108,8 +186,14 @@ function App() {
                                 <p className="bold">{data.main.humidity} %</p>
                             ) : null}
                             <p>Humidity</p>
-                        </div>
-                        <div className="wind">
+                        </motion.div>
+                        <motion.div
+                            className="wind"
+                            whileHover={{
+                                scale: 0.9,
+                                transition: { type: "spring", duration: 1 },
+                            }}
+                        >
                             <div className="icon">
                                 <GiWhirlwind />
                             </div>
@@ -118,7 +202,7 @@ function App() {
                                 <p className="bold">{data.wind.speed} MPH</p>
                             ) : null}
                             <p>Wind Speed</p>
-                        </div>
+                        </motion.div>
                     </div>
                 )}
             </div>
